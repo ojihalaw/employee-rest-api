@@ -11,6 +11,7 @@ import com.example.demo.service.PermissionService;
 import com.example.demo.service.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class RoleController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_READ')")
     @GetMapping
     public ApiResponse<PageResponse<RoleResponse>> getAll(
             @RequestParam(required = false) String name,
@@ -38,6 +40,7 @@ public class RoleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('ROLE_CREATE')")
     @PostMapping
     public ApiResponse<Void> create(
             @Valid
@@ -51,6 +54,7 @@ public class RoleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('ROLE_READ')")
     @GetMapping("{id}")
     public ApiResponse<RoleResponse > getById(@PathVariable UUID id){
 
@@ -62,6 +66,7 @@ public class RoleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('ROLE_UPDATE')")
     @PutMapping("/{id}")
     public ApiResponse<Void> update(
             @Valid
@@ -74,6 +79,7 @@ public class RoleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('ROLE_DELETE')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(
             @PathVariable UUID id

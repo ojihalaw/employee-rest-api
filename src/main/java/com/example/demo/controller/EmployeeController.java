@@ -9,6 +9,7 @@ import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class EmployeeController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_READ')")
     @GetMapping
     public ApiResponse<PageResponse<EmployeeResponse>> getAll(
             @RequestParam(required = false) String name,
@@ -36,6 +38,7 @@ public class EmployeeController {
         );
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_CREATE')")
     @PostMapping
     public ApiResponse<Void> createEmployee(
             @Valid
@@ -49,6 +52,7 @@ public class EmployeeController {
         );
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_READ')")
     @GetMapping("{id}")
     public ApiResponse<EmployeeResponse > getById(@PathVariable UUID id){
 
@@ -60,6 +64,7 @@ public class EmployeeController {
         );
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_UPDATE')")
     @PutMapping("/{id}")
     public ApiResponse<Void> updateEmployee(
             @Valid
@@ -72,6 +77,7 @@ public class EmployeeController {
         );
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_DELETE')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteEmployee(
             @PathVariable UUID id

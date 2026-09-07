@@ -8,6 +8,7 @@ import com.example.demo.dto.permission.PermissionResponse;
 import com.example.demo.service.PermissionService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class PermissionController {
         this.service = service;
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ')")
     @GetMapping
     public ApiResponse<PageResponse<PermissionResponse>> getAll(
             @RequestParam(required = false) String name,
@@ -35,6 +37,7 @@ public class PermissionController {
         );
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     @PostMapping
     public ApiResponse<Void> create(
             @Valid
@@ -48,6 +51,7 @@ public class PermissionController {
         );
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_READ')")
     @GetMapping("{id}")
     public ApiResponse<PermissionResponse > getById(@PathVariable UUID id){
 
@@ -59,6 +63,7 @@ public class PermissionController {
         );
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_UPDATE')")
     @PutMapping("/{id}")
     public ApiResponse<Void> update(
             @Valid
@@ -71,6 +76,7 @@ public class PermissionController {
         );
     }
 
+    @PreAuthorize("hasAuthority('PERMISSION_DELETE')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(
             @PathVariable UUID id
