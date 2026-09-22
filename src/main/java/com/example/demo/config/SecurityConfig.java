@@ -30,13 +30,16 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
+                        .anyRequest().permitAll()
                 );
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/v1/auth/login").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(
+//                        jwtAuthenticationFilter,
+//                        UsernamePasswordAuthenticationFilter.class
+//                );
 
         return http.build();
     }

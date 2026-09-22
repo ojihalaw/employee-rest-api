@@ -11,6 +11,8 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.DepartmentMapper;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.specification.DepartmentSpecification;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +32,7 @@ public class DepartmentService {
         this.departmentMapper = departmentMapper;
     }
 
+    @Cacheable("departments")
     public PageResponse<DepartmentResponse> findAll(
             String name,
             Pageable pageable
@@ -62,6 +65,7 @@ public class DepartmentService {
         );
     }
 
+    @CacheEvict(value = "departments",  allEntries = true)
     public Department create(DepartmentCreateRequest request){
         if (repository.existsByName(request.getName())){
             throw new DuplicateResourceException(
@@ -84,6 +88,7 @@ public class DepartmentService {
         return departmentMapper.toResponse(department);
     }
 
+    @CacheEvict(value = "departments",  allEntries = true)
     public Department update(UUID id, DepartmentUpdateRequest request){
         Department department = repository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() ->
@@ -101,6 +106,7 @@ public class DepartmentService {
         return repository.save(department);
     }
 
+    @CacheEvict(value = "departments",  allEntries = true)
     public void delete(UUID id){
         Department department = repository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found"));

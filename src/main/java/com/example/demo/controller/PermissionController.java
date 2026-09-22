@@ -22,7 +22,7 @@ public class PermissionController {
         this.service = service;
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_READ')")
+//    @PreAuthorize("hasAuthority('PERMISSION_READ')")
     @GetMapping
     public ApiResponse<PageResponse<PermissionResponse>> getAll(
             @RequestParam(required = false) String name,
@@ -37,7 +37,7 @@ public class PermissionController {
         );
     }
 
-    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
+//    @PreAuthorize("hasAuthority('PERMISSION_CREATE')")
     @PostMapping
     public ApiResponse<Void> create(
             @Valid
